@@ -1,6 +1,205 @@
-<html>
-  <head><title>HIIII GOATTT!!! -robotickid</title></head>
-  <body>
-    <h1>hey bbg</h1>
-  </body>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lint & Luster</title>
+
+  <style>
+    :root{
+      --maxw:1100px;
+      --accent:#111;
+      --muted:#6b6b6b;
+      --bg:#FAF4E8;
+      --border:#e5e5e5;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Inter,system-ui;background:var(--bg);color:var(--accent)}
+    .container{max-width:var(--maxw);margin:40px auto;padding:0 20px}
+
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+    .brand img{width:100px;height:100px;border-radius:12px;object-fit:cover}
+    .tag{color:var(--muted);font-size:13px;margin-top:2px}
+
+    .section{border:2px solid var(--border);padding:26px;border-radius:12px;margin-bottom:26px;background: #FDFBF7;}
+
+    .hero{display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .hero h2{font-size:32px;margin-bottom:10px}
+    .hero p{color:var(--muted);line-height:1.4}
+    .cta{display:inline-block;margin-top:18px;padding:10px 16px;border-radius:10px;border:1px solid #ddd;text-decoration:none;font-weight:600;color:var(--accent)}
+
+    .grid{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+    .card{border:1px solid #e5e5e5;border-radius:12px;padding:14px;cursor:pointer;transition:.2s;background:#FAF4E8}
+    .card:hover{transform:translateY(-4px)}
+    .card img{width:100%;height:170px;object-fit:cover;border-radius:8px}
+    .card h3{font-size:17px;margin:10px 0 4px}
+    .price{color:var(--muted);font-size:14px}
+
+    footer{text-align:center;color:var(--muted);margin-top:40px;padding-bottom:20px}
+
+    /* POPUP */
+    .popup-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:20}
+    .popup{background:#FFF9F8;border:1px solid var(--border);padding:22px;border-radius:14px;width:90%;max-width:360px}
+    .popup h3{margin-bottom:12px;text-align: center;}
+    .popup p{color:var(--muted);font-size:14px;margin-bottom:12px}
+    .popup input{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:10px}
+    .popup button{width:100%;padding:10px;border:none;border-radius:8px;background:#111;color:white;font-weight:600;cursor:pointer}
+    .close{margin-top:10px;text-align:center;color:var(--muted);font-size:13px;cursor:pointer}
+
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <a class="brand" href="#">
+      <img src="photos/logo.png">
+      <div>
+        <h1>Lint & Luster</h1>
+        <div class="tag">Handmade Accessories — DPS Nacharam</div>
+      </div>
+    </a>
+  </header>
+
+  <section class="section hero">
+    <div>
+      <h2>Handmade • Minimal • Aesthetic</h2>
+      <p>Keychains, bracelets & necklaces. Custom made. School delivery available.</p>
+    </div>
+    <img src="photos/pngtree-bead-bracelet-clipart-colorful-bracelet-arranged-with-rubber-beads-cartoon-vector-png-image_12156125.png" style="width:200px;height:200px;border-radius:14px;object-fit:cover">
+  </section>
+
+  <section class="section">
+    <h3 style="font-size:15px;color:var(--muted);margin-bottom:12px">Products</h3>
+
+    <div class="grid">
+      <article class="card" onclick="openPopup('Strawberry Glaze Keychains','₹200')"><img src="photos/download (2).jpeg"><h3>Strawberry Glaze Keychains</h3><div class="price">₹200</div></article>
+      <article class="card" onclick="openPopup('Bows Galore Keychains','₹250')"><img src="photos/download (1).jpeg"><h3>Bows Galore Keychains</h3><div class="price">₹250</div></article>
+      <article class="card" onclick="openPopup('Photo Frame Keychains','₹250')"><img src="photos/download.jpeg"><h3>Photo Frame Keychains</h3><div class="price">₹250</div></article>
+      <article class="card" onclick="openPopup('Customizable Charm Bracelets','₹300')"><img src="photos/images.jpeg"><h3>Customizable Charm Bracelets</h3><div class="price">₹300</div></article>
+      <article class="card" onclick="openPopup('Beaded Bracelets','₹199')"><img src="photos/images (1).jpeg"><h3>Beaded Bracelets</h3><div class="price">₹199</div></article>
+      <article class="card" onclick="openPopup('Cord Necklaces (Silver & Gold Charms)','₹250')"><img src="photos/images (2).jpeg"><h3>Cord Necklaces (Silver & Gold Charms)</h3><div class="price">₹250</div></article>
+      <article class="card" onclick="openPopup('Gold/Silver Charm Necklaces','₹350')"><img src="photos/images (3).jpeg"><h3>Gold/Silver Charm Necklaces</h3><div class="price">₹350</div></article>
+      <article class="card" onclick="openPopup('Gold/Silver Saturn Pearl Necklaces','₹350')"><img src="photos/images (4).jpeg"><h3>Gold/Silver Saturn Pearl Necklaces</h3><div class="price">₹350</div></article>
+    </div>
+
+  </section>
+
+  <footer>
+    © Lint & Luster — Made by Nishanth.
+  </footer>
+</div>
+
+<!-- POPUP -->
+<div class="popup-bg" id="popupBg">
+    <div class="popup" style="display:flex;gap:14px;max-width:520px;align-items:flex-start;">
+
+        <!-- IMAGE AREA (BLANK PLACEHOLDER) -->
+    <div style="width:220px;height:220px;border-radius:12px;border:1px solid var(--border);background:#f8f8f8;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+            <img id="popupImg" src="" alt="" style="width:1000px;height:100%;object-fit:cover;display:none;">
+        </div>
+
+        <!-- RIGHT SIDE: TEXT + FORM -->
+        <div style="flex:1;">
+            <h3 id="popupTitle"></h3>
+            <p id="popupDesc" style="margin-bottom:6px;color:var(--muted)"></p>
+            <p id="popupPrice" style="font-weight:600;margin-bottom:14px"></p>
+
+            <input id="custName" placeholder="Your name">
+            <input id="custClass" placeholder="Class & Section">
+            <h4 id="orderbad" class="center"></h4>
+
+            <button onclick="sendOrder()">Submit Order</button>
+            <div class="close" onclick="closePopup()">Cancel</div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+  let selectedProduct = '';
+  let selectedPrice = '';
+
+  const productInfo = {
+    "Strawberry Glaze Keychains": {
+      desc: "Cute strawberry-themed glaze keychains.",
+      img: "photos/download (2).jpeg" // blank for now
+    },
+    "Bows Galore Keychains": {
+      desc: "Aesthetic bow keychains.",
+      img: "photos/download (1).jpeg"
+    },
+    "Photo Frame Keychains": {
+      desc: "Add your own mini photo!",
+      img: "photos/download.jpeg"
+    },
+    "Customizable Charm Bracelets": {
+      desc: "Custom charm combinations.",
+      img: "photos/images.jpeg"
+    },
+    "Beaded Bracelets": {
+      desc: "Minimal beaded bracelets.",
+      img: "photos/images (1).jpeg"
+    },
+    "Cord Necklaces (Silver & Gold Charms)": {
+      desc: "Cord necklaces with charms.",
+      img: "photos/images (2).jpeg"
+    },
+    "Gold/Silver Charm Necklaces": {
+      desc: "Premium charm necklaces.",
+      img: "photos/images (3).jpeg"
+    },
+    "Gold/Silver Saturn Pearl Necklaces": {
+      desc: "Pearl necklace with Saturn charm.",
+      img: "photos/images (4).jpeg"
+    }
+  };
+
+  function openPopup(name, price){
+    selectedProduct = name;
+    selectedPrice = price;
+
+    const info = productInfo[name];
+
+    document.getElementById('popupTitle').innerText = name;
+    document.getElementById('popupDesc').innerText = info.desc;
+    document.getElementById('popupPrice').innerText = 'Price: ' + price;
+
+    const imgElem = document.getElementById('popupImg');
+
+    if(info.img){
+        imgElem.src = info.img;
+        imgElem.style.display = 'block';
+    } else {
+        imgElem.src = '';
+        imgElem.style.display = 'none';
+    }
+
+    document.getElementById('orderbad').innerHTML = "";
+    document.getElementById('popupBg').style.display='flex';
+  }
+
+  function closePopup(){
+    document.getElementById('custName').value = "";
+    document.getElementById('custClass').value = "";
+    document.getElementById('orderbad').innerHTML = "";
+    document.getElementById('popupBg').style.display='none';
+  }
+
+  function sendOrder(){
+    const n=document.getElementById('custName').value;
+    const c=document.getElementById('custClass').value;
+    if(!n||!c){
+        document.getElementById('orderbad').innerHTML = "Please Fill Out All The Fields";
+    }
+    else{
+        const url=`https://wa.me/8121035600?text=Order%20Details:%0AProduct:%20${selectedProduct}%0APrice:%20${selectedPrice}%0AName:%20${n}%0AClass:%20${c}`;
+        window.open(url,'_blank');
+        document.getElementById('orderbad').innerHTML = "";
+    }
+  }
+</script>
+
+</body>
 </html>
