@@ -5,612 +5,569 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Lint & Luster</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --cream: #FAF6EF;
-      --warm-white: #FDFBF7;
-      --blush: #F2E0D5;
-      --terracotta: #C4704A;
-      --terracotta-light: #D4845E;
-      --ink: #1C1714;
-      --muted: #8B7F79;
-      --border: rgba(196,112,74,0.18);
-      --card-bg: #FDFAF6;
+    :root {
+      --ink: #0D0C0B;
+      --paper: #F7F3EC;
+      --gold: #C8A96A;
+      --gold-dim: rgba(200,169,106,0.18);
+      --off: #7A7268;
+      --surface: #FEFCF8;
+      --border: rgba(200,169,106,0.22);
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+    html { scroll-behavior: smooth; }
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--ink);
+      font-family: 'Outfit', sans-serif;
+      background: var(--ink);
+      color: var(--paper);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* Grain texture overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 100;
-      opacity: 0.5;
-    }
-
-    .container { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
-
-    /* ── HEADER ── */
-    header {
-      padding: 28px 0 24px;
+    /* TOP BAR */
+    .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 18px 40px;
       border-bottom: 1px solid var(--border);
-      animation: fadeDown 0.7s ease both;
+      position: sticky;
+      top: 0;
+      background: rgba(13,12,11,0.94);
+      backdrop-filter: blur(14px);
+      z-index: 50;
+      animation: slideDown .6s ease both;
     }
-
-    .brand {
+    .logo-row {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       text-decoration: none;
       color: inherit;
     }
-
-    .brand-logo {
-      width: 60px;
-      height: 60px;
+    .logo-img {
+      width: 40px; height: 40px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid var(--border);
-    }
-
-    .brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      line-height: 1;
-    }
-
-    .brand-tag {
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-top: 5px;
-    }
-
-    .header-pill {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--terracotta);
-      border: 1px solid var(--terracotta);
-      padding: 6px 14px;
-      border-radius: 100px;
-      font-weight: 500;
-    }
-
-    /* ── HERO ── */
-    .hero {
-      padding: 56px 0 48px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: center;
-      animation: fadeUp 0.8s 0.1s ease both;
-    }
-
-    .hero-eyebrow {
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--terracotta);
-      margin-bottom: 16px;
-      font-weight: 500;
-    }
-
-    .hero h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(38px, 6vw, 58px);
-      font-weight: 300;
-      line-height: 1.1;
-      color: var(--ink);
-      margin-bottom: 16px;
-    }
-
-    .hero h2 em {
-      font-style: italic;
-      color: var(--terracotta);
-    }
-
-    .hero-sub {
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.6;
-      max-width: 380px;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      margin-top: 22px;
-      background: var(--blush);
       border: 1px solid var(--border);
-      padding: 8px 16px;
-      border-radius: 100px;
-      font-size: 13px;
-      color: var(--ink);
+    }
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .topbar-tag {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
     }
 
-    .hero-badge::before {
-      content: '🛵';
-      font-size: 14px;
+    /* HERO */
+    .hero {
+      padding: 90px 40px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 60px;
+      align-items: end;
+      animation: fadeUp 0.8s 0.15s ease both;
     }
-
-    .hero-img-wrap {
-      position: relative;
-      width: 200px;
-      height: 200px;
-      flex-shrink: 0;
-    }
-
-    .hero-img-wrap::before {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 1px dashed var(--terracotta);
-      opacity: 0.4;
-      animation: spin 20s linear infinite;
-    }
-
-    .hero-img {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--warm-white);
-      box-shadow: 0 8px 40px rgba(196,112,74,0.15);
-    }
-
-    /* ── DIVIDER ── */
-    .divider {
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 32px;
+      gap: 12px;
+    }
+    .hero-label::before {
+      content: '';
+      display: inline-block;
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+      display: block;
+    }
+    .hero-sub {
+      color: var(--off);
+      font-size: 15px;
+      line-height: 1.65;
+      max-width: 400px;
+      font-weight: 300;
+    }
+    .delivery-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      border: 1px solid var(--border);
+      padding: 9px 18px;
+      border-radius: 100px;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .hero-img-stack { position: relative; height: 340px; }
+    .hero-img-main {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
+      filter: sepia(0.08) saturate(1.1);
+    }
+    .hero-img-badge {
+      position: absolute;
+      bottom: -18px; left: -18px;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: 'Playfair Display', serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 14px 20px;
+      border-radius: 12px;
     }
 
-    .divider-line { flex: 1; height: 1px; background: var(--border); }
-
-    .divider-label {
+    /* MARQUEE */
+    .marquee-wrap {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      padding: 14px 0;
+      margin-top: 80px;
+    }
+    .marquee {
+      display: flex;
+      animation: scroll 22s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 24px;
+      padding-right: 48px;
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--off);
+    }
+    .marquee-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: inline-block;
+      flex-shrink: 0;
     }
 
-    /* ── GRID ── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 16px;
-      margin-bottom: 56px;
+    /* PRODUCTS */
+    .products-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 70px 40px;
+      animation: fadeUp 0.8s 0.3s ease both;
     }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-      animation: fadeUp 0.6s ease both;
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 40px;
     }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(28,23,20,0.1);
-      border-color: rgba(196,112,74,0.35);
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1;
     }
-
-    .card-img-wrap {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 1;
-    }
-
-    .card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-      display: block;
-    }
-
-    .card:hover img { transform: scale(1.05); }
-
-    .card-body { padding: 14px 16px 16px; }
-
-    .card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 17px;
-      font-weight: 400;
-      line-height: 1.3;
-      margin-bottom: 6px;
-    }
-
-    .card-price {
-      font-size: 13px;
-      color: var(--terracotta);
-      font-weight: 500;
-    }
-
-    .card-cta {
-      display: block;
-      margin-top: 10px;
-      text-align: center;
+    .section-count {
       font-size: 12px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--off);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .card {
+      background: var(--ink);
+      cursor: pointer;
+      transition: background 0.25s ease;
+      overflow: hidden;
+    }
+    .card:hover { background: #161411; }
+    .card-img-wrap { aspect-ratio: 1; overflow: hidden; }
+    .card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.3s;
+      filter: brightness(0.92) saturate(0.95);
+    }
+    .card:hover img { transform: scale(1.08); filter: brightness(1) saturate(1.05); }
+    .card-body {
+      padding: 16px 18px 20px;
       border-top: 1px solid var(--border);
-      padding-top: 10px;
-      transition: color 0.2s;
+    }
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-price {
+      font-size: 13px;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+    .card-arrow {
+      width: 28px; height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      font-size: 13px;
+      color: var(--off);
+    }
+    .card:hover .card-arrow {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--ink);
     }
 
-    .card:hover .card-cta { color: var(--terracotta); }
-
-    /* Staggered card animation */
-    .card:nth-child(1){animation-delay:0.05s}
-    .card:nth-child(2){animation-delay:0.1s}
-    .card:nth-child(3){animation-delay:0.15s}
-    .card:nth-child(4){animation-delay:0.2s}
-    .card:nth-child(5){animation-delay:0.25s}
-    .card:nth-child(6){animation-delay:0.3s}
-    .card:nth-child(7){animation-delay:0.35s}
-    .card:nth-child(8){animation-delay:0.4s}
-
-    /* ── FOOTER ── */
+    /* FOOTER */
     footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      padding: 24px 0 32px;
       border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--off);
+      letter-spacing: 0.06em;
+    }
+    .f-brand {
+      font-family: 'Playfair Display', serif;
+      color: var(--paper);
+      font-size: 14px;
     }
 
-    /* ── POPUP ── */
-    .popup-bg {
+    /* POPUP */
+    .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(28,23,20,0.55);
-      backdrop-filter: blur(6px);
+      background: rgba(8,7,6,0.82);
+      backdrop-filter: blur(16px);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 200;
       padding: 20px;
     }
-
-    .popup {
-      background: var(--warm-white);
+    .drawer {
+      background: #131210;
       border: 1px solid var(--border);
       border-radius: 20px;
       width: 100%;
-      max-width: 520px;
+      max-width: 560px;
       overflow: hidden;
       display: flex;
-      box-shadow: 0 32px 80px rgba(28,23,20,0.2);
-      animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+      animation: riseUp 0.35s cubic-bezier(0.34,1.4,0.64,1) both;
     }
-
-    .popup-img-col {
-      width: 200px;
+    .drawer-img {
+      width: 220px;
       flex-shrink: 0;
-      background: var(--blush);
+      background: #0D0C0B;
       overflow: hidden;
     }
-
-    .popup-img-col img {
-      width: 100%;
-      height: 100%;
+    .drawer-img img {
+      width: 100%; height: 100%;
       object-fit: cover;
       display: none;
+      opacity: 0.9;
     }
-
-    .popup-body {
+    .drawer-content {
       flex: 1;
-      padding: 24px 22px;
+      padding: 28px 26px;
       display: flex;
       flex-direction: column;
     }
-
-    .popup-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-weight: 400;
+    .drawer-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .drawer-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
       line-height: 1.2;
       margin-bottom: 6px;
     }
-
-    .popup-desc {
+    .drawer-desc {
       font-size: 13px;
-      color: var(--muted);
+      color: var(--off);
       line-height: 1.5;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      font-weight: 300;
     }
-
-    .popup-price {
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--terracotta);
-      margin-bottom: 18px;
-      font-family: 'Cormorant Garamond', serif;
+    .drawer-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--gold);
+      margin-bottom: 22px;
     }
-
-    .popup-body input {
+    .drawer-input {
       width: 100%;
-      padding: 10px 14px;
+      padding: 11px 14px;
       border: 1px solid var(--border);
       border-radius: 10px;
       margin-bottom: 10px;
-      font-family: 'DM Sans', sans-serif;
+      background: rgba(255,255,255,0.04);
+      color: var(--paper);
+      font-family: 'Outfit', sans-serif;
       font-size: 14px;
-      background: var(--cream);
-      color: var(--ink);
+      font-weight: 300;
       outline: none;
       transition: border-color 0.2s;
     }
-
-    .popup-body input:focus { border-color: var(--terracotta); }
-    .popup-body input::placeholder { color: var(--muted); }
-
-    .popup-error {
+    .drawer-input::placeholder { color: var(--off); }
+    .drawer-input:focus { border-color: var(--gold); }
+    .drawer-error {
       font-size: 12px;
-      color: #b94040;
+      color: #D97A6A;
       margin-bottom: 8px;
-      min-height: 18px;
+      min-height: 16px;
     }
-
-    .popup-submit {
+    .drawer-btn {
       width: 100%;
-      padding: 12px;
+      padding: 13px;
       border: none;
       border-radius: 10px;
-      background: var(--terracotta);
-      color: white;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       cursor: pointer;
-      letter-spacing: 0.04em;
-      transition: background 0.2s, transform 0.15s;
+      transition: opacity 0.2s, transform 0.15s;
     }
-
-    .popup-submit:hover { background: var(--terracotta-light); transform: translateY(-1px); }
-    .popup-submit:active { transform: translateY(0); }
-
-    .popup-cancel {
+    .drawer-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .drawer-btn:active { transform: translateY(0); opacity: 1; }
+    .drawer-cancel {
       text-align: center;
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--muted);
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--off);
       cursor: pointer;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       transition: color 0.2s;
     }
+    .drawer-cancel:hover { color: var(--paper); }
 
-    .popup-cancel:hover { color: var(--ink); }
+    /* ANIMATIONS */
+    @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes riseUp   { from{opacity:0;transform:scale(0.9) translateY(30px)} to{opacity:1;transform:scale(1) translateY(0)} }
+    @keyframes scroll   { to{transform:translateX(-50%)} }
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 
-    /* ── ANIMATIONS ── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-14px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2,1fr); }
+      .hero { grid-template-columns: 1fr; padding: 60px 24px 50px; }
+      .hero-img-stack { height: 260px; }
     }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(0.92); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 540px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-img-wrap { display: none; }
-      .popup { flex-direction: column; }
-      .popup-img-col { width: 100%; height: 180px; }
-      .header-pill { display: none; }
+    @media (max-width: 580px) {
+      .topbar { padding: 16px 20px; }
+      .products-section { padding: 50px 20px; }
+      .drawer { flex-direction: column; }
+      .drawer-img { width: 100%; height: 200px; }
+      footer { flex-direction: column; gap: 10px; text-align: center; }
     }
   </style>
 </head>
 <body>
-<div class="container">
 
-  <header>
-    <a class="brand" href="#">
-      <img class="brand-logo" src="photos/logo.png" alt="Lint & Luster">
-      <div>
-        <div class="brand-name">Lint &amp; Luster</div>
-        <div class="brand-tag">DPS Nacharam · Handmade Accessories</div>
-      </div>
+  <nav class="topbar">
+    <a class="logo-row" href="#">
+      <img class="logo-img" src="photos/logo.png" alt="L&L">
+      <span class="logo-text">Lint &amp; Luster</span>
     </a>
-    <span class="header-pill">School Delivery ✦</span>
-  </header>
+    <span class="topbar-tag">DPS Nacharam</span>
+  </nav>
 
   <section class="hero">
     <div>
-      <p class="hero-eyebrow">Handcrafted with love</p>
-      <h2>Minimal. <em>Aesthetic.</em><br>Yours.</h2>
-      <p class="hero-sub">Keychains, bracelets &amp; necklaces — custom made, delivered right to your classroom.</p>
-      <div class="hero-badge">School delivery available</div>
+      <p class="hero-label">Handcrafted accessories</p>
+      <h1>Made<br>with<em>care.</em></h1>
+      <p class="hero-sub">Keychains, bracelets &amp; necklaces — handmade and custom ordered, delivered to your classroom.</p>
+      <div class="delivery-pill">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        School delivery available
+      </div>
     </div>
-    <div class="hero-img-wrap">
-      <img class="hero-img" src="photos/pngtree-bead-bracelet-clipart-colorful-bracelet-arranged-with-rubber-beads-cartoon-vector-png-image_12156125.png" alt="Bracelet">
+    <div class="hero-img-stack">
+      <img class="hero-img-main" src="photos/pngtree-bead-bracelet-clipart-colorful-bracelet-arranged-with-rubber-beads-cartoon-vector-png-image_12156125.png" alt="">
+      <div class="hero-img-badge">Custom Made</div>
     </div>
   </section>
 
-  <div class="divider">
-    <span class="divider-line"></span>
-    <span class="divider-label">Our Collection</span>
-    <span class="divider-line"></span>
-  </div>
-
-  <div class="grid">
-    <article class="card" onclick="openPopup('Strawberry Glaze Keychains','₹200')">
-      <div class="card-img-wrap"><img src="photos/download (2).jpeg" alt="Strawberry Glaze Keychains"></div>
-      <div class="card-body">
-        <h3>Strawberry Glaze Keychains</h3>
-        <div class="card-price">₹200</div>
-        <span class="card-cta">Order →</span>
-      </div>
-    </article>
-    <article class="card" onclick="openPopup('Bows Galore Keychains','₹250')">
-      <div class="card-img-wrap"><img src="photos/download (1).jpeg" alt="Bows Galore Keychains"></div>
-      <div class="card-body">
-        <h3>Bows Galore Keychains</h3>
-        <div class="card-price">₹250</div>
-        <span class="card-cta">Order →</span>
-      </div>
-    </article>
-    <article class="card" onclick="openPopup('Photo Frame Keychains','₹250')">
-      <div class="card-img-wrap"><img src="photos/download.jpeg" alt="Photo Frame Keychains"></div>
-      <div class="card-body">
-        <h3>Photo Frame Keychains</h3>
-        <div class="card-price">₹250</div>
-        <span class="card-cta">Order →</span>
-      </div>
-    </article>
-    <article class="card" onclick="openPopup('Customizable Charm Bracelets','₹300')">
-      <div class="card-img-wrap"><img src="photos/images.jpeg" alt="Customizable Charm Bracelets"></div>
-      <div class="card-body">
-        <h3>Customizable Charm Bracelets</h3>
-        <div class="card-price">₹300</div>
-        <span class="card-cta">Order →</span>
-      </div>
-    </article>
-    <article class="card" onclick="openPopup('Beaded Bracelets','₹199')">
-      <div class="card-img-wrap"><img src="photos/images (1).jpeg" alt="Beaded Bracelets"></div>
-      <div class="card-body">
-        <h3>Beaded Bracelets</h3>
-        <div class="card-price">₹199</div>
-        <span class="card-cta">Order →</span>
-      </div>
-    </article>
-    <article class="card" onclick="openPopup('Cord Necklaces (Silver & Gold Charms)','₹250')">
-      <div class="card-img-wrap"><img src="photos/images (2).jpeg" alt="Cord Necklaces"></div>
-      <div class="card-body">
-        <h3>Cord Necklaces (Silver &amp; Gold Charms)</h3>
-        <div class="card-price">₹250</div>
-        <span class="card-cta">Order →</span>
-      </div>
-    </article>
-    <article class="card" onclick="openPopup('Gold/Silver Charm Necklaces','₹350')">
-      <div class="card-img-wrap"><img src="photos/images (3).jpeg" alt="Gold/Silver Charm Necklaces"></div>
-      <div class="card-body">
-        <h3>Gold/Silver Charm Necklaces</h3>
-        <div class="card-price">₹350</div>
-        <span class="card-cta">Order →</span>
-      </div>
-    </article>
-    <article class="card" onclick="openPopup('Gold/Silver Saturn Pearl Necklaces','₹350')">
-      <div class="card-img-wrap"><img src="photos/images (4).jpeg" alt="Gold/Silver Saturn Pearl Necklaces"></div>
-      <div class="card-body">
-        <h3>Gold/Silver Saturn Pearl Necklaces</h3>
-        <div class="card-price">₹350</div>
-        <span class="card-cta">Order →</span>
-      </div>
-    </article>
-  </div>
-
-  <footer>© Lint &amp; Luster &nbsp;·&nbsp; Made by Nishanth</footer>
-</div>
-
-<!-- POPUP -->
-<div class="popup-bg" id="popupBg">
-  <div class="popup">
-    <div class="popup-img-col">
-      <img id="popupImg" src="" alt="">
-    </div>
-    <div class="popup-body">
-      <h3 class="popup-name" id="popupTitle"></h3>
-      <p class="popup-desc" id="popupDesc"></p>
-      <p class="popup-price" id="popupPrice"></p>
-      <input id="custName" placeholder="Your name">
-      <input id="custClass" placeholder="Class &amp; Section">
-      <p class="popup-error" id="orderbad"></p>
-      <button class="popup-submit" onclick="sendOrder()">Order via WhatsApp</button>
-      <div class="popup-cancel" onclick="closePopup()">Cancel</div>
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <span class="marquee-item">Keychains<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Bracelets<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Necklaces<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Custom Orders<span class="marquee-dot"></span></span>
+      <span class="marquee-item">School Delivery<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Handmade<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Minimal &amp; Aesthetic<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Keychains<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Bracelets<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Necklaces<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Custom Orders<span class="marquee-dot"></span></span>
+      <span class="marquee-item">School Delivery<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Handmade<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Minimal &amp; Aesthetic<span class="marquee-dot"></span></span>
     </div>
   </div>
-</div>
 
-<script>
-  let selectedProduct = '';
-  let selectedPrice = '';
+  <section class="products-section">
+    <div class="section-header">
+      <h2 class="section-title">The Collection</h2>
+      <span class="section-count">8 pieces</span>
+    </div>
+    <div class="grid">
+      <article class="card" onclick="openPopup('Strawberry Glaze Keychains','₹200')">
+        <div class="card-img-wrap"><img src="photos/download (2).jpeg" alt="Strawberry Glaze Keychains"></div>
+        <div class="card-body"><h3 class="card-name">Strawberry Glaze Keychains</h3><div class="card-footer"><span class="card-price">₹200</span><div class="card-arrow">→</div></div></div>
+      </article>
+      <article class="card" onclick="openPopup('Bows Galore Keychains','₹250')">
+        <div class="card-img-wrap"><img src="photos/download (1).jpeg" alt="Bows Galore Keychains"></div>
+        <div class="card-body"><h3 class="card-name">Bows Galore Keychains</h3><div class="card-footer"><span class="card-price">₹250</span><div class="card-arrow">→</div></div></div>
+      </article>
+      <article class="card" onclick="openPopup('Photo Frame Keychains','₹250')">
+        <div class="card-img-wrap"><img src="photos/download.jpeg" alt="Photo Frame Keychains"></div>
+        <div class="card-body"><h3 class="card-name">Photo Frame Keychains</h3><div class="card-footer"><span class="card-price">₹250</span><div class="card-arrow">→</div></div></div>
+      </article>
+      <article class="card" onclick="openPopup('Customizable Charm Bracelets','₹300')">
+        <div class="card-img-wrap"><img src="photos/images.jpeg" alt="Customizable Charm Bracelets"></div>
+        <div class="card-body"><h3 class="card-name">Customizable Charm Bracelets</h3><div class="card-footer"><span class="card-price">₹300</span><div class="card-arrow">→</div></div></div>
+      </article>
+      <article class="card" onclick="openPopup('Beaded Bracelets','₹199')">
+        <div class="card-img-wrap"><img src="photos/images (1).jpeg" alt="Beaded Bracelets"></div>
+        <div class="card-body"><h3 class="card-name">Beaded Bracelets</h3><div class="card-footer"><span class="card-price">₹199</span><div class="card-arrow">→</div></div></div>
+      </article>
+      <article class="card" onclick="openPopup('Cord Necklaces (Silver & Gold Charms)','₹250')">
+        <div class="card-img-wrap"><img src="photos/images (2).jpeg" alt="Cord Necklaces"></div>
+        <div class="card-body"><h3 class="card-name">Cord Necklaces (Silver &amp; Gold Charms)</h3><div class="card-footer"><span class="card-price">₹250</span><div class="card-arrow">→</div></div></div>
+      </article>
+      <article class="card" onclick="openPopup('Gold/Silver Charm Necklaces','₹350')">
+        <div class="card-img-wrap"><img src="photos/images (3).jpeg" alt="Gold/Silver Charm Necklaces"></div>
+        <div class="card-body"><h3 class="card-name">Gold/Silver Charm Necklaces</h3><div class="card-footer"><span class="card-price">₹350</span><div class="card-arrow">→</div></div></div>
+      </article>
+      <article class="card" onclick="openPopup('Gold/Silver Saturn Pearl Necklaces','₹350')">
+        <div class="card-img-wrap"><img src="photos/images (4).jpeg" alt="Saturn Pearl Necklaces"></div>
+        <div class="card-body"><h3 class="card-name">Gold/Silver Saturn Pearl Necklaces</h3><div class="card-footer"><span class="card-price">₹350</span><div class="card-arrow">→</div></div></div>
+      </article>
+    </div>
+  </section>
 
-  const productInfo = {
-    "Strawberry Glaze Keychains":             { desc: "Cute strawberry-themed glaze keychains.",    img: "photos/download (2).jpeg" },
-    "Bows Galore Keychains":                  { desc: "Aesthetic bow keychains.",                    img: "photos/download (1).jpeg" },
-    "Photo Frame Keychains":                  { desc: "Add your own mini photo!",                    img: "photos/download.jpeg" },
-    "Customizable Charm Bracelets":           { desc: "Custom charm combinations.",                  img: "photos/images.jpeg" },
-    "Beaded Bracelets":                       { desc: "Minimal beaded bracelets.",                   img: "photos/images (1).jpeg" },
-    "Cord Necklaces (Silver & Gold Charms)":  { desc: "Cord necklaces with charms.",                 img: "photos/images (2).jpeg" },
-    "Gold/Silver Charm Necklaces":            { desc: "Premium charm necklaces.",                    img: "photos/images (3).jpeg" },
-    "Gold/Silver Saturn Pearl Necklaces":     { desc: "Pearl necklace with Saturn charm.",           img: "photos/images (4).jpeg" }
-  };
+  <footer>
+    <span class="f-brand">Lint &amp; Luster</span>
+    <span>Made by Nishanth · DPS Nacharam</span>
+    <span>© 2025</span>
+  </footer>
 
-  function openPopup(name, price) {
-    selectedProduct = name;
-    selectedPrice = price;
-    const info = productInfo[name];
-    document.getElementById('popupTitle').innerText = name;
-    document.getElementById('popupDesc').innerText = info.desc;
-    document.getElementById('popupPrice').innerText = price;
-    const img = document.getElementById('popupImg');
-    if (info.img) { img.src = info.img; img.style.display = 'block'; }
-    else           { img.src = ''; img.style.display = 'none'; }
-    document.getElementById('orderbad').innerText = '';
-    document.getElementById('popupBg').style.display = 'flex';
-  }
+  <div class="overlay" id="overlay">
+    <div class="drawer">
+      <div class="drawer-img"><img id="popupImg" src="" alt=""></div>
+      <div class="drawer-content">
+        <p class="drawer-eyebrow">Place an order</p>
+        <h3 class="drawer-name" id="popupTitle"></h3>
+        <p class="drawer-desc" id="popupDesc"></p>
+        <p class="drawer-price" id="popupPrice"></p>
+        <input class="drawer-input" id="custName" placeholder="Your name">
+        <input class="drawer-input" id="custClass" placeholder="Class &amp; Section">
+        <p class="drawer-error" id="orderbad"></p>
+        <button class="drawer-btn" onclick="sendOrder()">Order via WhatsApp</button>
+        <div class="drawer-cancel" onclick="closePopup()">Cancel</div>
+      </div>
+    </div>
+  </div>
 
-  function closePopup() {
-    document.getElementById('custName').value = '';
-    document.getElementById('custClass').value = '';
-    document.getElementById('orderbad').innerText = '';
-    document.getElementById('popupBg').style.display = 'none';
-  }
-
-  function sendOrder() {
-    const n = document.getElementById('custName').value.trim();
-    const c = document.getElementById('custClass').value.trim();
-    if (!n || !c) {
-      document.getElementById('orderbad').innerText = 'Please fill out all fields.';
-      return;
+  <script>
+    let selectedProduct = '', selectedPrice = '';
+    const productInfo = {
+      "Strawberry Glaze Keychains":            { desc: "Cute strawberry-themed glaze keychains.", img: "photos/download (2).jpeg" },
+      "Bows Galore Keychains":                 { desc: "Aesthetic bow keychains.",                 img: "photos/download (1).jpeg" },
+      "Photo Frame Keychains":                 { desc: "Add your own mini photo!",                 img: "photos/download.jpeg" },
+      "Customizable Charm Bracelets":          { desc: "Custom charm combinations.",               img: "photos/images.jpeg" },
+      "Beaded Bracelets":                      { desc: "Minimal beaded bracelets.",                img: "photos/images (1).jpeg" },
+      "Cord Necklaces (Silver & Gold Charms)": { desc: "Cord necklaces with charms.",              img: "photos/images (2).jpeg" },
+      "Gold/Silver Charm Necklaces":           { desc: "Premium charm necklaces.",                 img: "photos/images (3).jpeg" },
+      "Gold/Silver Saturn Pearl Necklaces":    { desc: "Pearl necklace with Saturn charm.",        img: "photos/images (4).jpeg" }
+    };
+    function openPopup(name, price) {
+      selectedProduct = name; selectedPrice = price;
+      const info = productInfo[name];
+      document.getElementById('popupTitle').innerText = name;
+      document.getElementById('popupDesc').innerText = info.desc;
+      document.getElementById('popupPrice').innerText = price;
+      const img = document.getElementById('popupImg');
+      img.src = info.img; img.style.display = 'block';
+      document.getElementById('orderbad').innerText = '';
+      document.getElementById('overlay').style.display = 'flex';
     }
-    const url = `https://wa.me/8121035600?text=Order%20Details:%0AProduct:%20${encodeURIComponent(selectedProduct)}%0APrice:%20${encodeURIComponent(selectedPrice)}%0AName:%20${encodeURIComponent(n)}%0AClass:%20${encodeURIComponent(c)}`;
-    window.open(url, '_blank');
-    document.getElementById('orderbad').innerText = '';
-  }
-
-  document.getElementById('popupBg').addEventListener('click', function(e) {
-    if (e.target === this) closePopup();
-  });
-</script>
-
+    function closePopup() {
+      document.getElementById('custName').value = '';
+      document.getElementById('custClass').value = '';
+      document.getElementById('orderbad').innerText = '';
+      document.getElementById('overlay').style.display = 'none';
+    }
+    function sendOrder() {
+      const n = document.getElementById('custName').value.trim();
+      const c = document.getElementById('custClass').value.trim();
+      if (!n || !c) { document.getElementById('orderbad').innerText = 'Please fill out all fields.'; return; }
+      window.open(`https://wa.me/8121035600?text=Order%20Details:%0AProduct:%20${encodeURIComponent(selectedProduct)}%0APrice:%20${encodeURIComponent(selectedPrice)}%0AName:%20${encodeURIComponent(n)}%0AClass:%20${encodeURIComponent(c)}`, '_blank');
+      document.getElementById('orderbad').innerText = '';
+    }
+    document.getElementById('overlay').addEventListener('click', e => { if (e.target.id === 'overlay') closePopup(); });
+  </script>
 </body>
 </html>
