@@ -4,49 +4,438 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Lint & Luster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --maxw:1100px;
-      --accent:#111;
-      --muted:#6b6b6b;
-      --bg:#FAF4E8;
-      --border:#e5e5e5;
+      --cream: #FAF6EF;
+      --warm-white: #FDFBF7;
+      --blush: #F2E0D5;
+      --terracotta: #C4704A;
+      --terracotta-light: #D4845E;
+      --ink: #1C1714;
+      --muted: #8B7F79;
+      --border: rgba(196,112,74,0.18);
+      --card-bg: #FDFAF6;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Inter,system-ui;background:var(--bg);color:var(--accent)}
-    .container{max-width:var(--maxw);margin:40px auto;padding:0 20px}
 
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
-    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-    .brand img{width:100px;height:100px;border-radius:12px;object-fit:cover}
-    .tag{color:var(--muted);font-size:13px;margin-top:2px}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .section{border:2px solid var(--border);padding:26px;border-radius:12px;margin-bottom:26px;background: #FDFBF7;}
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-    .hero{display:flex;align-items:center;justify-content:space-between;gap:24px}
-    .hero h2{font-size:32px;margin-bottom:10px}
-    .hero p{color:var(--muted);line-height:1.4}
-    .cta{display:inline-block;margin-top:18px;padding:10px 16px;border-radius:10px;border:1px solid #ddd;text-decoration:none;font-weight:600;color:var(--accent)}
+    /* Grain texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.5;
+    }
 
-    .grid{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-    .card{border:1px solid #e5e5e5;border-radius:12px;padding:14px;cursor:pointer;transition:.2s;background:#FAF4E8}
-    .card:hover{transform:translateY(-4px)}
-    .card img{width:100%;height:170px;object-fit:cover;border-radius:8px}
-    .card h3{font-size:17px;margin:10px 0 4px}
-    .price{color:var(--muted);font-size:14px}
+    .container { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
 
-    footer{text-align:center;color:var(--muted);margin-top:40px;padding-bottom:20px}
+    /* ── HEADER ── */
+    header {
+      padding: 28px 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      animation: fadeDown 0.7s ease both;
+    }
 
-    /* POPUP */
-    .popup-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:20}
-    .popup{background:#FFF9F8;border:1px solid var(--border);padding:22px;border-radius:14px;width:90%;max-width:360px}
-    .popup h3{margin-bottom:12px;text-align: center;}
-    .popup p{color:var(--muted);font-size:14px;margin-bottom:12px}
-    .popup input{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:10px}
-    .popup button{width:100%;padding:10px;border:none;border-radius:8px;background:#111;color:white;font-weight:600;cursor:pointer}
-    .close{margin-top:10px;text-align:center;color:var(--muted);font-size:13px;cursor:pointer}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: inherit;
+    }
 
+    .brand-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    .header-pill {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      border: 1px solid var(--terracotta);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 56px 0 48px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .hero h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(38px, 6vw, 58px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    .hero h2 em {
+      font-style: italic;
+      color: var(--terracotta);
+    }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 380px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 22px;
+      background: var(--blush);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .hero-badge::before {
+      content: '🛵';
+      font-size: 14px;
+    }
+
+    .hero-img-wrap {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      flex-shrink: 0;
+    }
+
+    .hero-img-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px dashed var(--terracotta);
+      opacity: 0.4;
+      animation: spin 20s linear infinite;
+    }
+
+    .hero-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--warm-white);
+      box-shadow: 0 8px 40px rgba(196,112,74,0.15);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .divider-line { flex: 1; height: 1px; background: var(--border); }
+
+    .divider-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(28,23,20,0.1);
+      border-color: rgba(196,112,74,0.35);
+    }
+
+    .card-img-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+      display: block;
+    }
+
+    .card:hover img { transform: scale(1.05); }
+
+    .card-body { padding: 14px 16px 16px; }
+
+    .card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .card-price {
+      font-size: 13px;
+      color: var(--terracotta);
+      font-weight: 500;
+    }
+
+    .card-cta {
+      display: block;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      transition: color 0.2s;
+    }
+
+    .card:hover .card-cta { color: var(--terracotta); }
+
+    /* Staggered card animation */
+    .card:nth-child(1){animation-delay:0.05s}
+    .card:nth-child(2){animation-delay:0.1s}
+    .card:nth-child(3){animation-delay:0.15s}
+    .card:nth-child(4){animation-delay:0.2s}
+    .card:nth-child(5){animation-delay:0.25s}
+    .card:nth-child(6){animation-delay:0.3s}
+    .card:nth-child(7){animation-delay:0.35s}
+    .card:nth-child(8){animation-delay:0.4s}
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      padding: 24px 0 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── POPUP ── */
+    .popup-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(28,23,20,0.55);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+
+    .popup {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      overflow: hidden;
+      display: flex;
+      box-shadow: 0 32px 80px rgba(28,23,20,0.2);
+      animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    .popup-img-col {
+      width: 200px;
+      flex-shrink: 0;
+      background: var(--blush);
+      overflow: hidden;
+    }
+
+    .popup-img-col img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .popup-body {
+      flex: 1;
+      padding: 24px 22px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .popup-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .popup-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .popup-price {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--terracotta);
+      margin-bottom: 18px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .popup-body input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      background: var(--cream);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .popup-body input:focus { border-color: var(--terracotta); }
+    .popup-body input::placeholder { color: var(--muted); }
+
+    .popup-error {
+      font-size: 12px;
+      color: #b94040;
+      margin-bottom: 8px;
+      min-height: 18px;
+    }
+
+    .popup-submit {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: var(--terracotta);
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .popup-submit:hover { background: var(--terracotta-light); transform: translateY(-1px); }
+    .popup-submit:active { transform: translateY(0); }
+
+    .popup-cancel {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .popup-cancel:hover { color: var(--ink); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 540px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-img-wrap { display: none; }
+      .popup { flex-direction: column; }
+      .popup-img-col { width: 100%; height: 180px; }
+      .header-pill { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -54,67 +443,120 @@
 
   <header>
     <a class="brand" href="#">
-      <img src="photos/logo.png">
+      <img class="brand-logo" src="photos/logo.png" alt="Lint & Luster">
       <div>
-        <h1>Lint & Luster</h1>
-        <div class="tag">Handmade Accessories — DPS Nacharam</div>
+        <div class="brand-name">Lint &amp; Luster</div>
+        <div class="brand-tag">DPS Nacharam · Handmade Accessories</div>
       </div>
     </a>
+    <span class="header-pill">School Delivery ✦</span>
   </header>
 
-  <section class="section hero">
+  <section class="hero">
     <div>
-      <h2>Handmade • Minimal • Aesthetic</h2>
-      <p>Keychains, bracelets & necklaces. Custom made. School delivery available.</p>
+      <p class="hero-eyebrow">Handcrafted with love</p>
+      <h2>Minimal. <em>Aesthetic.</em><br>Yours.</h2>
+      <p class="hero-sub">Keychains, bracelets &amp; necklaces — custom made, delivered right to your classroom.</p>
+      <div class="hero-badge">School delivery available</div>
     </div>
-    <img src="photos/pngtree-bead-bracelet-clipart-colorful-bracelet-arranged-with-rubber-beads-cartoon-vector-png-image_12156125.png" style="width:200px;height:200px;border-radius:14px;object-fit:cover">
+    <div class="hero-img-wrap">
+      <img class="hero-img" src="photos/pngtree-bead-bracelet-clipart-colorful-bracelet-arranged-with-rubber-beads-cartoon-vector-png-image_12156125.png" alt="Bracelet">
+    </div>
   </section>
 
-  <section class="section">
-    <h3 style="font-size:15px;color:var(--muted);margin-bottom:12px">Products</h3>
+  <div class="divider">
+    <span class="divider-line"></span>
+    <span class="divider-label">Our Collection</span>
+    <span class="divider-line"></span>
+  </div>
 
-    <div class="grid">
-      <article class="card" onclick="openPopup('Strawberry Glaze Keychains','₹200')"><img src="photos/download (2).jpeg"><h3>Strawberry Glaze Keychains</h3><div class="price">₹200</div></article>
-      <article class="card" onclick="openPopup('Bows Galore Keychains','₹250')"><img src="photos/download (1).jpeg"><h3>Bows Galore Keychains</h3><div class="price">₹250</div></article>
-      <article class="card" onclick="openPopup('Photo Frame Keychains','₹250')"><img src="photos/download.jpeg"><h3>Photo Frame Keychains</h3><div class="price">₹250</div></article>
-      <article class="card" onclick="openPopup('Customizable Charm Bracelets','₹300')"><img src="photos/images.jpeg"><h3>Customizable Charm Bracelets</h3><div class="price">₹300</div></article>
-      <article class="card" onclick="openPopup('Beaded Bracelets','₹199')"><img src="photos/images (1).jpeg"><h3>Beaded Bracelets</h3><div class="price">₹199</div></article>
-      <article class="card" onclick="openPopup('Cord Necklaces (Silver & Gold Charms)','₹250')"><img src="photos/images (2).jpeg"><h3>Cord Necklaces (Silver & Gold Charms)</h3><div class="price">₹250</div></article>
-      <article class="card" onclick="openPopup('Gold/Silver Charm Necklaces','₹350')"><img src="photos/images (3).jpeg"><h3>Gold/Silver Charm Necklaces</h3><div class="price">₹350</div></article>
-      <article class="card" onclick="openPopup('Gold/Silver Saturn Pearl Necklaces','₹350')"><img src="photos/images (4).jpeg"><h3>Gold/Silver Saturn Pearl Necklaces</h3><div class="price">₹350</div></article>
-    </div>
+  <div class="grid">
+    <article class="card" onclick="openPopup('Strawberry Glaze Keychains','₹200')">
+      <div class="card-img-wrap"><img src="photos/download (2).jpeg" alt="Strawberry Glaze Keychains"></div>
+      <div class="card-body">
+        <h3>Strawberry Glaze Keychains</h3>
+        <div class="card-price">₹200</div>
+        <span class="card-cta">Order →</span>
+      </div>
+    </article>
+    <article class="card" onclick="openPopup('Bows Galore Keychains','₹250')">
+      <div class="card-img-wrap"><img src="photos/download (1).jpeg" alt="Bows Galore Keychains"></div>
+      <div class="card-body">
+        <h3>Bows Galore Keychains</h3>
+        <div class="card-price">₹250</div>
+        <span class="card-cta">Order →</span>
+      </div>
+    </article>
+    <article class="card" onclick="openPopup('Photo Frame Keychains','₹250')">
+      <div class="card-img-wrap"><img src="photos/download.jpeg" alt="Photo Frame Keychains"></div>
+      <div class="card-body">
+        <h3>Photo Frame Keychains</h3>
+        <div class="card-price">₹250</div>
+        <span class="card-cta">Order →</span>
+      </div>
+    </article>
+    <article class="card" onclick="openPopup('Customizable Charm Bracelets','₹300')">
+      <div class="card-img-wrap"><img src="photos/images.jpeg" alt="Customizable Charm Bracelets"></div>
+      <div class="card-body">
+        <h3>Customizable Charm Bracelets</h3>
+        <div class="card-price">₹300</div>
+        <span class="card-cta">Order →</span>
+      </div>
+    </article>
+    <article class="card" onclick="openPopup('Beaded Bracelets','₹199')">
+      <div class="card-img-wrap"><img src="photos/images (1).jpeg" alt="Beaded Bracelets"></div>
+      <div class="card-body">
+        <h3>Beaded Bracelets</h3>
+        <div class="card-price">₹199</div>
+        <span class="card-cta">Order →</span>
+      </div>
+    </article>
+    <article class="card" onclick="openPopup('Cord Necklaces (Silver & Gold Charms)','₹250')">
+      <div class="card-img-wrap"><img src="photos/images (2).jpeg" alt="Cord Necklaces"></div>
+      <div class="card-body">
+        <h3>Cord Necklaces (Silver &amp; Gold Charms)</h3>
+        <div class="card-price">₹250</div>
+        <span class="card-cta">Order →</span>
+      </div>
+    </article>
+    <article class="card" onclick="openPopup('Gold/Silver Charm Necklaces','₹350')">
+      <div class="card-img-wrap"><img src="photos/images (3).jpeg" alt="Gold/Silver Charm Necklaces"></div>
+      <div class="card-body">
+        <h3>Gold/Silver Charm Necklaces</h3>
+        <div class="card-price">₹350</div>
+        <span class="card-cta">Order →</span>
+      </div>
+    </article>
+    <article class="card" onclick="openPopup('Gold/Silver Saturn Pearl Necklaces','₹350')">
+      <div class="card-img-wrap"><img src="photos/images (4).jpeg" alt="Gold/Silver Saturn Pearl Necklaces"></div>
+      <div class="card-body">
+        <h3>Gold/Silver Saturn Pearl Necklaces</h3>
+        <div class="card-price">₹350</div>
+        <span class="card-cta">Order →</span>
+      </div>
+    </article>
+  </div>
 
-  </section>
-
-  <footer>
-    © Lint & Luster — Made by Nishanth.
-  </footer>
+  <footer>© Lint &amp; Luster &nbsp;·&nbsp; Made by Nishanth</footer>
 </div>
 
 <!-- POPUP -->
 <div class="popup-bg" id="popupBg">
-    <div class="popup" style="display:flex;gap:14px;max-width:520px;align-items:flex-start;">
-
-        <!-- IMAGE AREA (BLANK PLACEHOLDER) -->
-    <div style="width:220px;height:220px;border-radius:12px;border:1px solid var(--border);background:#f8f8f8;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-            <img id="popupImg" src="" alt="" style="width:1000px;height:100%;object-fit:cover;display:none;">
-        </div>
-
-        <!-- RIGHT SIDE: TEXT + FORM -->
-        <div style="flex:1;">
-            <h3 id="popupTitle"></h3>
-            <p id="popupDesc" style="margin-bottom:6px;color:var(--muted)"></p>
-            <p id="popupPrice" style="font-weight:600;margin-bottom:14px"></p>
-
-            <input id="custName" placeholder="Your name">
-            <input id="custClass" placeholder="Class & Section">
-            <h4 id="orderbad" class="center"></h4>
-
-            <button onclick="sendOrder()">Submit Order</button>
-            <div class="close" onclick="closePopup()">Cancel</div>
-        </div>
-
+  <div class="popup">
+    <div class="popup-img-col">
+      <img id="popupImg" src="" alt="">
     </div>
+    <div class="popup-body">
+      <h3 class="popup-name" id="popupTitle"></h3>
+      <p class="popup-desc" id="popupDesc"></p>
+      <p class="popup-price" id="popupPrice"></p>
+      <input id="custName" placeholder="Your name">
+      <input id="custClass" placeholder="Class &amp; Section">
+      <p class="popup-error" id="orderbad"></p>
+      <button class="popup-submit" onclick="sendOrder()">Order via WhatsApp</button>
+      <div class="popup-cancel" onclick="closePopup()">Cancel</div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -122,83 +564,52 @@
   let selectedPrice = '';
 
   const productInfo = {
-    "Strawberry Glaze Keychains": {
-      desc: "Cute strawberry-themed glaze keychains.",
-      img: "photos/download (2).jpeg" // blank for now
-    },
-    "Bows Galore Keychains": {
-      desc: "Aesthetic bow keychains.",
-      img: "photos/download (1).jpeg"
-    },
-    "Photo Frame Keychains": {
-      desc: "Add your own mini photo!",
-      img: "photos/download.jpeg"
-    },
-    "Customizable Charm Bracelets": {
-      desc: "Custom charm combinations.",
-      img: "photos/images.jpeg"
-    },
-    "Beaded Bracelets": {
-      desc: "Minimal beaded bracelets.",
-      img: "photos/images (1).jpeg"
-    },
-    "Cord Necklaces (Silver & Gold Charms)": {
-      desc: "Cord necklaces with charms.",
-      img: "photos/images (2).jpeg"
-    },
-    "Gold/Silver Charm Necklaces": {
-      desc: "Premium charm necklaces.",
-      img: "photos/images (3).jpeg"
-    },
-    "Gold/Silver Saturn Pearl Necklaces": {
-      desc: "Pearl necklace with Saturn charm.",
-      img: "photos/images (4).jpeg"
-    }
+    "Strawberry Glaze Keychains":             { desc: "Cute strawberry-themed glaze keychains.",    img: "photos/download (2).jpeg" },
+    "Bows Galore Keychains":                  { desc: "Aesthetic bow keychains.",                    img: "photos/download (1).jpeg" },
+    "Photo Frame Keychains":                  { desc: "Add your own mini photo!",                    img: "photos/download.jpeg" },
+    "Customizable Charm Bracelets":           { desc: "Custom charm combinations.",                  img: "photos/images.jpeg" },
+    "Beaded Bracelets":                       { desc: "Minimal beaded bracelets.",                   img: "photos/images (1).jpeg" },
+    "Cord Necklaces (Silver & Gold Charms)":  { desc: "Cord necklaces with charms.",                 img: "photos/images (2).jpeg" },
+    "Gold/Silver Charm Necklaces":            { desc: "Premium charm necklaces.",                    img: "photos/images (3).jpeg" },
+    "Gold/Silver Saturn Pearl Necklaces":     { desc: "Pearl necklace with Saturn charm.",           img: "photos/images (4).jpeg" }
   };
 
-  function openPopup(name, price){
+  function openPopup(name, price) {
     selectedProduct = name;
     selectedPrice = price;
-
     const info = productInfo[name];
-
     document.getElementById('popupTitle').innerText = name;
     document.getElementById('popupDesc').innerText = info.desc;
-    document.getElementById('popupPrice').innerText = 'Price: ' + price;
-
-    const imgElem = document.getElementById('popupImg');
-
-    if(info.img){
-        imgElem.src = info.img;
-        imgElem.style.display = 'block';
-    } else {
-        imgElem.src = '';
-        imgElem.style.display = 'none';
-    }
-
-    document.getElementById('orderbad').innerHTML = "";
-    document.getElementById('popupBg').style.display='flex';
+    document.getElementById('popupPrice').innerText = price;
+    const img = document.getElementById('popupImg');
+    if (info.img) { img.src = info.img; img.style.display = 'block'; }
+    else           { img.src = ''; img.style.display = 'none'; }
+    document.getElementById('orderbad').innerText = '';
+    document.getElementById('popupBg').style.display = 'flex';
   }
 
-  function closePopup(){
-    document.getElementById('custName').value = "";
-    document.getElementById('custClass').value = "";
-    document.getElementById('orderbad').innerHTML = "";
-    document.getElementById('popupBg').style.display='none';
+  function closePopup() {
+    document.getElementById('custName').value = '';
+    document.getElementById('custClass').value = '';
+    document.getElementById('orderbad').innerText = '';
+    document.getElementById('popupBg').style.display = 'none';
   }
 
-  function sendOrder(){
-    const n=document.getElementById('custName').value;
-    const c=document.getElementById('custClass').value;
-    if(!n||!c){
-        document.getElementById('orderbad').innerHTML = "Please Fill Out All The Fields";
+  function sendOrder() {
+    const n = document.getElementById('custName').value.trim();
+    const c = document.getElementById('custClass').value.trim();
+    if (!n || !c) {
+      document.getElementById('orderbad').innerText = 'Please fill out all fields.';
+      return;
     }
-    else{
-        const url=`https://wa.me/8121035600?text=Order%20Details:%0AProduct:%20${selectedProduct}%0APrice:%20${selectedPrice}%0AName:%20${n}%0AClass:%20${c}`;
-        window.open(url,'_blank');
-        document.getElementById('orderbad').innerHTML = "";
-    }
+    const url = `https://wa.me/8121035600?text=Order%20Details:%0AProduct:%20${encodeURIComponent(selectedProduct)}%0APrice:%20${encodeURIComponent(selectedPrice)}%0AName:%20${encodeURIComponent(n)}%0AClass:%20${encodeURIComponent(c)}`;
+    window.open(url, '_blank');
+    document.getElementById('orderbad').innerText = '';
   }
+
+  document.getElementById('popupBg').addEventListener('click', function(e) {
+    if (e.target === this) closePopup();
+  });
 </script>
 
 </body>
